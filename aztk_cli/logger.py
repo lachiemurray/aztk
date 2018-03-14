@@ -2,7 +2,6 @@ import logging
 import platform
 
 root = logging.getLogger("aztk")
-logging.getLogger("azure.storage").setLevel(logging.CRITICAL)
 
 DEFAULT_FORMAT = '%(message)s'
 VERBOSE_FORMAT = '%(asctime)s: %(levelname)s: %(message)s'
