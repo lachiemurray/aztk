@@ -27,6 +27,7 @@ def __docker_run_cmd(docker_repo: str = None,
         cmd = CommandBuilder('nvidia-docker run')
     else:
         cmd = CommandBuilder('docker run')
+    cmd.add_option('--privileged', enable=True)
     cmd.add_option('--net', 'host')
     cmd.add_option('--name', constants.DOCKER_SPARK_CONTAINER_NAME)
     cmd.add_option('-v', '/mnt/batch/tasks:/mnt/batch/tasks')
