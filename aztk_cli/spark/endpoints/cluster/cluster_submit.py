@@ -70,9 +70,18 @@ def setup_parser(parser: argparse.ArgumentParser):
                         help='Path to the file you wish to output to. If not \
                               specified, output is printed to stdout')
 
+    parser.add_argument('--skip-app-upload', action='store_true',
+                        help='Do not upload app to cluster, assume it is already \
+                              accessible at the given path')
+
     parser.add_argument('app',
-                        help='App jar OR python file to execute. Use absolute \
-                              path to reference file.')
+                        help='App jar OR python file to execute. If the \
+                             --skip-app-upload flag is *not* set then an absolute \
+                             path to a local file should be used, the file will \
+                             then be uploaded to the storage account associated \
+                             with the cluster. If the --skip-app-upload is set \
+                             then the path provided need not be absolute but must \
+                             be accessible from within the docker container.')
 
     parser.add_argument('app_args', nargs='*',
                         help='Arguments for the application')
@@ -146,6 +155,7 @@ def execute(args: typing.NamedTuple):
             executor_cores=args.executor_cores,
             max_retry_count=args.max_retry_count
         ),
+        skip_app_upload=args.skip_app_upload,
         wait=False
     )
 
