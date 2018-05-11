@@ -17,10 +17,11 @@ def __get_node(spark_client, node_id: str, cluster_id: str) -> batch_models.Comp
     return spark_client.batch_client.compute_node.get(cluster_id, node_id)
 
 
-def generate_task(spark_client, container_id, application, skip_app_upload=False):
+def generate_task(spark_client, container_id, application, remote=False):
     resource_files = []
 
-    if not skip_app_upload:
+    # The application provided is not hosted remotely and therefore must be uploaded
+    if not remote:
         app_resource_file = helpers.upload_file_to_container(container_name=container_id,
                                                             application_name=application.name,
                                                             file_path=application.application,
@@ -114,11 +115,11 @@ def affinitize_task_to_master(spark_client, cluster_id, task):
     return task
 
 
-def submit_application(spark_client, cluster_id, application, skip_app_upload: bool = False, wait: bool = False):
+def submit_application(spark_client, cluster_id, application, remote: bool = False, wait: bool = False):
     """
     Submit a spark app
     """
-    task = generate_task(spark_client, cluster_id, application, skip_app_upload)
+    task = generate_task(spark_client, cluster_id, application, remote)
     task = affinitize_task_to_master(spark_client, cluster_id, task)
 
 

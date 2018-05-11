@@ -113,7 +113,9 @@ def __app_submit_cmd(
     if executor_cores:
         spark_submit_cmd.add_option('--executor-cores', str(executor_cores))
 
-    spark_submit_cmd.add_argument(app + ' ' + ' '.join(['\'' + str(app_arg) + '\'' for app_arg in (app_args or [])]))
+    spark_submit_cmd.add_argument(
+        os.path.expandvars(app) + ' ' + 
+        ' '.join(['\'' + str(app_arg) + '\'' for app_arg in (app_args or [])]))
 
     with open("spark-submit.txt", mode="w", encoding="UTF-8") as stream:
         stream.write(spark_submit_cmd.to_str())
