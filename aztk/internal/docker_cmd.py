@@ -11,6 +11,7 @@ class DockerCmd:
             self.cmd = CommandBuilder('nvidia-docker run')
         else:
             self.cmd = CommandBuilder('docker run')
+        self.cmd.add_option('--privileged', enable=True)
         self.cmd.add_option('--net', 'host')
         self.cmd.add_option('--name', name)
         self.cmd.add_argument('-d')
